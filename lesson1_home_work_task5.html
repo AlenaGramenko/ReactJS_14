@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ES6</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script>
+<!-- 5*. Написать цикл, который создаёт массив промисов, внутри каждого промиса -->
+<!-- происходит обращение к ресурсу (https://jsonplaceholder.typicode.com/users/number), где -->
+<!-- вместо number подставляется число от 1 до 10, в итоге должно получиться 10 промисов. -->
+<!-- Следует дождаться выполнения загрузки всеми промисами и далее вывести массив -->
+<!-- загруженных данных -->
+
+      let promiseArray = [];
+
+      for (let i = 0; i < 10; i++) {
+          promiseArray[i] = new Promise(((resolve, reject) => {
+            $.ajax({
+              url: "https://jsonplaceholder.typicode.com/users/",
+              type: 'get',
+              contentType: 'application/json; charset=utf-8',
+              data: {'id': i + 1},
+              dataType: 'json',
+              success: resolve,
+              error: reject
+            });
+          
+          }));
+      }
+
+      Promise.all(promiseArray).then((returnedData) => {
+          //console.log(returnedData);
+          for (let i = 0; i < 10; i++) {
+            console.log(promiseArray[i]);
+          }
+        }, (error) => {
+          console.log('reject()', error); //В случае неудачи
+        }
+      );
+      
+    </script>
+</head>
+<body>
+</body>
+</html>
