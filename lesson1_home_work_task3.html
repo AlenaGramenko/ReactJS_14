@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ES6</title>
+    <script>
+      class Human {
+        constructor(name, dateOfBirth) {
+          this.name = name;
+          this.dateOfBirth = dateOfBirth;
+          
+          let now_date = new Date();
+          let current_year = now_date.getFullYear();
+          this.age = current_year - parseInt(dateOfBirth.split('-')[0]);
+        }
+        displayInfo() {
+          return `${this.name}, ${this.age} years old. Date of birth ${this.dateOfBirth}`
+        }
+      }
+      
+      class Employee extends Human {
+        constructor(name, dateOfBirth, department, salary) {
+            super(name, dateOfBirth);
+            this.department = department;
+            this.salary = salary;
+        }
+        displayInfo() {
+          return `${super.displayInfo()}, dep: ${this.department}, salary: ${this.salary}`;
+        }
+      }
+      
+      class Developer extends Employee {
+        constructor(name, dateOfBirth, department, salary) {
+          super(name, dateOfBirth, department, salary);
+          this.manager = undefined;
+        }
+        
+        displayInfo() {
+          return `Developer: ${super.displayInfo()} ${this.showManager()}`;
+        }
+        
+        addManager(manager) {
+          this.manager = manager;
+        }
+        
+        deleteManager(manager) {
+          this.manager = undefined;
+        }
+        
+        showManager() {
+          return `My manager: ${(this.manager === undefined) ? "Hasn't manager" : this.manager.displayInfo()}`;
+        }
+      }
+      
+      class Manager extends Employee {
+        constructor(name, dateOfBirth, department, salary, ...developers) {
+          super(name, dateOfBirth, department, salary);
+          this.developers = developers;
+          
+          this.developers.forEach(function(dev, index){ 
+             dev.manager = this;
+          }, this) 
+        }
+        
+        showAllDevelopers() {
+          console.log("____________________________________");
+          console.log("Manager's developers:");
+          this.developers.forEach(function(dev, index){ 
+             console.log(dev.displayInfo());
+          }) 
+         }
+        
+        displayInfo() {
+          return `Manager: ${super.displayInfo()}`;
+        }
+        
+        deleteDeveloper(name) {
+          this.developers = this.developers.filter(function (dev) {
+            if(dev.name === name) {
+              dev.deleteManager(this);
+              return false;
+            } else {
+              return true;
+            }
+          }, this);
+          
+          console.log("____________________________________");
+          console.log(`Developer ${name} was deleted`);
+        }
+        
+        addDeveloper(dev) {
+          this.developers.push(dev);
+          dev.addManager(this);
+          console.log("____________________________________");
+          console.log(`Developer ${dev.name} was added`);
+        }
+      }
+      
+      d = new Developer("Leon", "1985-07-20", "IT", 60000);
+      d2 = new Developer("Alena", "1992-04-29", "IT", 60000);
+      d3 = new Developer("Alex", "1986-10-18", "IT", 60000);
+      d4 = new Developer("Miha", "1986-11-14", "IT", 60000);
+      
+      m = new Manager("Thoeni", "1990-05-19", "IT", 50000, d, d2, d3);
+      console.log(m.displayInfo());
+
+      m.showAllDevelopers();
+      
+      m.deleteDeveloper("Alena");
+      console.log(d2.displayInfo());
+      
+      m.showAllDevelopers();
+      
+      m.addDeveloper(d4);
+      console.log(d4.displayInfo());
+      m.showAllDevelopers();
+      
+    </script>
+</head>
+<body>
+</body>
+</html>
