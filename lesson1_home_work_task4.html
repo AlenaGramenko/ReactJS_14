@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ES6</title>
+    <script>
+//4*. При помощи генератора написать функцию - анкету, которая запрашивает у
+//пользователя на ввод параметры и передаёт их в генератор. В конце, когда генератор
+//завершается, он должен вернуть все введённые входные параметры в виде объекта.
+//Этот объект нужно вывести в консоли.
+
+      function* generatorModel() {
+        let obj = {};
+        
+        yield obj.name = prompt('Введите имя');
+        yield obj.soname = prompt('Введите фамилию');
+        yield obj.bYear = prompt('Введите год рождения');
+        
+        yield obj;
+        return "Finish";
+      }
+      
+      let myModel = generatorModel();
+      
+      for(let item of generatorModel()) {
+        console.log(item);
+      }
+
+    </script>
+</head>
+<body>
+</body>
+</html>
