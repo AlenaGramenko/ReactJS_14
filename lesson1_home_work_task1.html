@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ES6</title>
+    <script>
+    
+//Написать функцию loop, которая будет принимать параметры: times (значение по
+//умолчанию = 0), callback (значение по умолчанию = null) и будет в цикле (times раз),
+//вызывать функцию callback. Если функцию не передана, то цикл не должен
+//отрабатывать ни разу. Покажите применение этой функции
+
+      let callback = (n) => {
+        console.log("Call function #" + n);
+      };
+      
+      let callback2;
+      let times = 5, times2;
+
+      loop = (times, callback) => {
+        if (times === undefined) {
+          times = 0;
+          console.log("times = 0");
+        }
+        if (callback === undefined) {
+          console.log("The function hasn't given");
+          return;
+        }
+        for (let i = 0; i < times; i++) {
+          callback(i);
+        }
+      }
+      
+      loop(times2, callback);
+      loop(times, callback2);
+      loop(times, callback);
+      
+    </script>
+</head>
+<body>
+
+</body>
+</html>
